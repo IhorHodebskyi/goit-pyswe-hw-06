@@ -19,7 +19,7 @@ def insert_fake_data():
             cur.executemany("INSERT INTO groups (name) VALUES (%s) ON CONFLICT DO NOTHING", [(name,) for name in group_names])
 
         if table_is_empty(cur, "teachers"):
-            teachers = ["John Doe"] + [fake.name() for _ in range(3)]  # Додаємо "John Doe"
+            teachers = ["John Doe"] + [fake.name() for _ in range(3)]
             cur.executemany("INSERT INTO teachers (name) VALUES (%s) RETURNING id", [(name,) for name in teachers])
 
         cur.execute("SELECT id FROM teachers")
@@ -36,7 +36,7 @@ def insert_fake_data():
         group_ids = [row[0] for row in cur.fetchall()]
 
         if table_is_empty(cur, "students"):
-            students = [("Ihor", random.choice(group_ids))] + [(fake.name(), random.choice(group_ids)) for _ in range(39)]  # Додаємо студента "Ihor"
+            students = [("Ihor", random.choice(group_ids))] + [(fake.name(), random.choice(group_ids)) for _ in range(39)]
             cur.executemany("INSERT INTO students (name, group_id) VALUES (%s, %s) RETURNING id", students)
 
         cur.execute("SELECT id FROM students")
